@@ -1,17 +1,22 @@
 FROM python:3.10-slim
 
-# 작업 디렉토리 설정
+# 작업 디렉토리
 WORKDIR /app
 
-# 의존성 복사
+# 필수 패키지 설치: pip + 한글 폰트 + 폰트 설정 도구
+RUN apt-get update && \
+    apt-get install -y python3-pip fonts-nanum fontconfig && \
+    fc-cache -fv && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# 의존성 복사 및 설치
 COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
-# 이미 설치된 패키지는 건너뛰고 설치
-RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir --requirement requirements.txt
-
-# 나머지 소스 복사
+# 코드 복사
 COPY . .
 
-# 기본 실행 파일 지정
+# 실행 명령
 CMD ["python", "main.py"]

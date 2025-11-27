@@ -3,6 +3,8 @@ import torch
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.rc('font', family='NanumGothic')
 
 print("🚀 PyTorch (CPU-only) 환경 시작!")
 
